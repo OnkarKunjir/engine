@@ -1,6 +1,6 @@
-#include <iostream>
+#include "render/window.hpp"
 
-int main(){
-  std::cout<<"Hello World!!"<<std::endl;
+int main() {
+  Window window;
   return 0;
 }
