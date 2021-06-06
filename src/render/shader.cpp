@@ -1,5 +1,6 @@
 #include "render/shader.hpp"
 #include "utils/log.hpp"
+#include <cstdlib>
 #include <fstream>
 #include <glad/gl.h>
 #include <sstream>
@@ -42,6 +43,7 @@ std::string Shader::read_shader_src(const std::string &path) const {
   src.open(path.c_str(), std::ios::in);
   if (!src.is_open()) {
     Log::error(__FILENAME__, "Failed to open file : " + path);
+    exit(EXIT_FAILURE);
   }
   std::string line;
   while (std::getline(src, line)) {
@@ -61,6 +63,7 @@ unsigned int Shader::compile_shader(const std::string &src,
   unsigned int shader = glad_glCreateShader(shader_type);
   if (!shader) {
     Log::error(__FILENAME__, "Failed to create shader " + shader_type_str);
+    exit(EXIT_FAILURE);
   }
 
   // compiling shader
@@ -81,6 +84,7 @@ unsigned int Shader::compile_shader(const std::string &src,
 
     Log::error(__FILENAME__, "Failed to compile " + shader_type_str);
     Log::error(__FILENAME__, log);
+    exit(EXIT_FAILURE);
   }
 
   return shader;

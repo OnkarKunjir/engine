@@ -1,6 +1,7 @@
 #include "render/window.hpp"
 #include "GLFW/glfw3.h"
 #include "utils/log.hpp"
+#include <cstdlib>
 #include <glad/gl.h>
 #include <iostream>
 #include <string>
@@ -20,6 +21,7 @@ Window::Window(std::string title, int width, int height) {
   glfwSetErrorCallback(glfw_error_callback);
   if (!glfwInit()) {
     Log::error(__FILENAME__, "Failed to initalize glfw");
+    exit(EXIT_FAILURE);
   }
 
   // creating window according to parameters provided
@@ -27,12 +29,17 @@ Window::Window(std::string title, int width, int height) {
   _window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
   if (_window == nullptr) {
     Log::error(__FILENAME__, "Failed to create window");
+    glfwTerminate();
+    exit(EXIT_FAILURE);
   }
   glfwMakeContextCurrent(_window);
 
   int version = gladLoadGL(glfwGetProcAddress);
   if (version == 0) {
     Log::error(__FILENAME__, "Failed to load glad");
+    glfwDestroyWindow(_window);
+    glfwTerminate();
+    exit(EXIT_FAILURE);
   } else {
     Log::message(__FILENAME__, "OpenGL Version - " +
                                    std::to_string(GLAD_VERSION_MAJOR(version)) +
