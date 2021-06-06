@@ -11,7 +11,6 @@
 
 // static functions
 void Window::glfw_error_callback(int error, const char *description) {
-  // callback function of glfw
   Log::error(__FILENAME__ ":GLFW", description);
 }
 
@@ -50,8 +49,8 @@ Window::~Window() {
 }
 
 // public functions
-bool Window::is_active() { return !glfwWindowShouldClose(_window); }
-void Window::poll_events() { glfwPollEvents(); }
-void Window::update() { glfwSwapBuffers(_window); }
+bool Window::is_active() const { return !glfwWindowShouldClose(_window); }
+void Window::poll_events() const { glfwPollEvents(); }
+void Window::update() const { glfwSwapBuffers(_window); }
 
 // private and protected functions

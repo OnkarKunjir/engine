@@ -11,4 +11,4 @@ Buffer::Buffer(unsigned int buffer_type, unsigned int usage, unsigned int size,
 
 Buffer::~Buffer() { glad_glDeleteBuffers(1, &_id); }
 
-void Buffer::bind() { glad_glBindBuffer(_buffer_type, _id); }
+void Buffer::bind() const { glad_glBindBuffer(_buffer_type, _id); }
