@@ -4,10 +4,9 @@
 */
 
 #pragma once
+#define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
 #include <string>
-
-#define __FILENAME__ "window.cpp"
 
 class Window {
 private:

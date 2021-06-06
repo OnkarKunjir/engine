@@ -1,4 +1,3 @@
-#define GLFW_INCLUDE_NONE
 #include "render/window.hpp"
 #include "GLFW/glfw3.h"
 #include "utils/log.hpp"
@@ -7,6 +6,8 @@
 #include <string>
 
 // TODO: add support to change window hints.
+
+#define __FILENAME__ "window.cpp"
 
 // static functions
 void Window::glfw_error_callback(int error, const char *description) {
