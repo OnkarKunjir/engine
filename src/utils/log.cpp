@@ -1,4 +1,5 @@
 #include "utils/log.hpp"
+
 #include <iostream>
 
 void Log::message(const std::string module, const std::string msg) {

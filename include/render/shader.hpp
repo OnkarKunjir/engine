@@ -14,13 +14,18 @@ public:
    *@param fs_path fragment shader path
    *@param out fragment shader outptu variable
    */
-  Shader(const std::string vs_path, const std::string fs_path,
-         const std::string out);
-
+  Shader(const std::string &vs_path, const std::string &fs_path,
+         const std::string &out);
   ~Shader();
 
   /// binds shader program
   void bind() const;
+
+  /**
+   *Returns uniform location from shader.
+   *@param name name of uniform defined in shader srouce code.
+   */
+  int get_uniform(const std::string &name) const;
 
 private:
   /**

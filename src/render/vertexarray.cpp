@@ -1,6 +1,7 @@
-#include "render/vertexarray.hpp"
 #include "render/buffer.hpp"
 #include "render/bufferlayout.hpp"
+#include "render/vertexarray.hpp"
+
 #include <glad/gl.h>
 
 VertexArray::VertexArray(Buffer &buffer, BufferLayout &layout) {

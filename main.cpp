@@ -1,13 +1,21 @@
+#define GLFW_INCLUDE_NONE
+#define __FILENAME__ "main.cpp"
+
 #include "render/buffer.hpp"
 #include "render/bufferlayout.hpp"
 #include "render/shader.hpp"
 #include "render/texture.hpp"
 #include "render/vertexarray.hpp"
 #include "render/window.hpp"
+#include "utils/log.hpp"
+
+#include <GLFW/glfw3.h>
 #include <glad/gl.h>
+#include <string>
 
 int main() {
-  Window window("title", 1000, 1000);
+
+  Window window("title", 800, 800);
 
   float vertices[] = {
       // x, y, r, g, b, tex_x, tex_y
@@ -33,6 +41,8 @@ int main() {
            "out_color");
 
   Texture cat("assets/textures/fat_cat.jpg", GL_TEXTURE0, GL_RGB);
+  cat.parameter(GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+  cat.parameter(GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
   while (window.is_active()) {
     glad_glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

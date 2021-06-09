@@ -1,4 +1,5 @@
 #include "render/buffer.hpp"
+
 #include <glad/gl.h>
 
 Buffer::Buffer(unsigned int buffer_type, unsigned int usage, unsigned int size,

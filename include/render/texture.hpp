@@ -16,7 +16,8 @@ public:
    *@param texture_unit texture unit to bind image with.
    *@param format format of image eg. GL_RGBA, GL_RGB,..
    */
-  Texture(std::string path, unsigned int texture_unit, unsigned int format);
+  Texture(const std::string &path, unsigned int texture_unit,
+          unsigned int format);
   ~Texture();
 
   /**Binds current texture*/

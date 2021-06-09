@@ -1,17 +1,20 @@
+#define __FILENAME__ "shader.cpp"
+
 #include "render/shader.hpp"
 #include "utils/log.hpp"
+
 #include <cstdlib>
 #include <fstream>
 #include <glad/gl.h>
 #include <sstream>
 #include <string>
 
-#define __FILENAME__ "shader.cpp"
-
 // TODO: better error handling
 
-Shader::Shader(const std::string vs_path, const std::string fs_path,
-               const std::string out) {
+Shader::Shader(const std::string &vs_path, const std::string &fs_path,
+               const std::string &out) {
+
+  // compile both the shaders.
   unsigned int vs = compile_shader(read_shader_src(vs_path), GL_VERTEX_SHADER);
   unsigned int fs =
       compile_shader(read_shader_src(fs_path), GL_FRAGMENT_SHADER);
@@ -34,6 +37,10 @@ Shader::~Shader() { glad_glDeleteProgram(_id); }
 
 // public function
 void Shader::bind() const { glad_glUseProgram(_id); }
+
+int Shader::get_uniform(const std::string &name) const {
+  return glad_glGetUniformLocation(_id, name.c_str());
+}
 
 // private functions
 std::string Shader::read_shader_src(const std::string &path) const {
