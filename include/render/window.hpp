@@ -15,7 +15,8 @@ private:
   GLFWwindow *_window;
 
 public:
-  /**Constructor
+  /**
+   *Constructor
    *creates new window and loads initalizes glad
    *@param title title of the window
    *@param width widht of the window

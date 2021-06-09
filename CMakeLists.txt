@@ -14,7 +14,7 @@ add_executable(engine main.cpp ${ENGINE_SRC})
 # subdirectoires
 add_subdirectory(deps)
 
-target_link_libraries(engine PUBLIC glfw glad)
+target_link_libraries(engine PUBLIC glfw glad stb_image)
 target_include_directories(engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/")
 
 # custom targets
