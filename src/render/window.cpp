@@ -1,17 +1,16 @@
 #define GLFW_INCLUDE_NONE
 #define __FILENAME__ "window.cpp"
 
-#include "GLFW/glfw3.h"
 #include "render/window.hpp"
 #include "utils/log.hpp"
 
 #include <cstdlib>
 #include <functional>
 #include <glad/gl.h>
-#include <iostream>
 #include <string>
 
 // TODO: add support to change window hints.
+// TODO: make depth test optional.
 
 // static functions
 void Window::glfw_error_callback(int error, const char *description) {
@@ -77,7 +76,12 @@ Window::Window(const std::string &title, int width, int height)
   glfwSetKeyCallback(_window, glfw_key_callback);
 
   glfwSwapInterval(1);
+  // FIXME: for testing purpose only.
   glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+  // opengl buffer options.
+  glad_glEnable(GL_DEPTH_TEST); // enabeling depth test by default.
+  glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 Window::~Window() {
@@ -94,7 +98,10 @@ void Window::set_key_callback(
   _key_callback = callback;
 }
 
-void Window::update() const { glfwSwapBuffers(_window); }
+void Window::update() const {
+  glfwSwapBuffers(_window);
+  glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
 
 void Window::get_cursor(double &xpos, double &ypos, bool clamp) const {
   glfwGetCursorPos(_window, &xpos, &ypos);

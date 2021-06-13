@@ -68,12 +68,7 @@ int main() {
   cat.parameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
   cat.parameter(GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-  unsigned int model_loc = s.get_uniform("model");
-  unsigned int view_loc = s.get_uniform("view");
-  unsigned int proj_loc = s.get_uniform("proj");
-
   float rotation = 0.0f;
-  glad_glEnable(GL_DEPTH_TEST);
 
   float x = 0;
   float z = -2.0f;
@@ -96,7 +91,6 @@ int main() {
         }
       });
   while (window.is_active()) {
-    glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glm::mat4 model = glm::mat4(1.0f);
     glm::mat4 view = glm::mat4(1.0f);
@@ -117,9 +111,9 @@ int main() {
 
     proj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 
-    glad_glUniformMatrix4fv(model_loc, 1, false, glm::value_ptr(model));
-    glad_glUniformMatrix4fv(view_loc, 1, false, glm::value_ptr(view));
-    glad_glUniformMatrix4fv(proj_loc, 1, false, glm::value_ptr(proj));
+    s.set_uniform_matrix4fv("model", glm::value_ptr(model));
+    s.set_uniform_matrix4fv("view", glm::value_ptr(view));
+    s.set_uniform_matrix4fv("proj", glm::value_ptr(proj));
 
     glad_glDrawElements(GL_TRIANGLES, sizeof(elements) / sizeof(int),
                         GL_UNSIGNED_INT, nullptr);

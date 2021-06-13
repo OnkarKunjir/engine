@@ -42,6 +42,11 @@ int Shader::get_uniform(const std::string &name) const {
   return glad_glGetUniformLocation(_id, name.c_str());
 }
 
+void Shader::set_uniform_matrix4fv(const std::string &name, const float *matrix,
+                                   bool transpose) const {
+  glad_glUniformMatrix4fv(get_uniform(name), 1, transpose, matrix);
+}
+
 // private functions
 std::string Shader::read_shader_src(const std::string &path) const {
   std::stringstream ss;

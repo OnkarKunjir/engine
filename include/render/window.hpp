@@ -44,21 +44,28 @@ public:
   static void glfw_key_callback(GLFWwindow *window, int key, int scancode,
                                 int action, int mods);
 
-  /**Check if window should close
+  /**
+   *Check if window should close
    *@return true if window was requested to close else false
    */
   bool is_active() const;
 
-  /**Polls input event for current window*/
+  /**
+   *Polls input event for current window
+   */
   void poll_events() const;
 
-  /**Sets keycallback.
+  /**
+   *Sets keycallback.
    *@param callback(int key, int scancode, int action, int mods) function is
    *called everytime new key event is detected.
    */
   void set_key_callback(std::function<void(int, int, int, int)> callback);
 
-  /**Swaps buffer for current window*/
+  /**
+   *Swaps buffer for current window and clears color buffer and depth buffer
+   *bit.
+   */
   void update() const;
 
   /**

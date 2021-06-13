@@ -27,6 +27,15 @@ public:
    */
   int get_uniform(const std::string &name) const;
 
+  /**
+   *Set the value of uniform value to a 4*4 matrix of type float.
+   *@param name Specify the name of uniform.
+   *@param matrix Specify the matrix to be assigned to uniform.
+   *@param transpose Take transpose of matrix.
+   **/
+  void set_uniform_matrix4fv(const std::string &name, const float *matrix,
+                             bool transpose = false) const;
+
 private:
   /**
    *compiles shader program
