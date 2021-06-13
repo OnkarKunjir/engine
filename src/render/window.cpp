@@ -35,7 +35,7 @@ void Window::glfw_key_callback(GLFWwindow *window, int key, int scancode,
 
 // constructors and destructors
 Window::Window(const std::string &title, int width, int height)
-    : _key_callback_warn(false) {
+    : _key_callback_warn(false), _width(width), _height(height) {
 
   // initalizes glfw and creates window.
   glfwSetErrorCallback(glfw_error_callback);
@@ -48,7 +48,7 @@ Window::Window(const std::string &title, int width, int height)
 
   // creating window according to parameters provided.
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-  _window = glfwCreateWindow(width, height, title.c_str(), nullptr, nullptr);
+  _window = glfwCreateWindow(_width, _height, title.c_str(), nullptr, nullptr);
   if (_window == nullptr) {
     Log::error(__FILENAME__, "Failed to create window");
     glfwTerminate();
@@ -77,6 +77,7 @@ Window::Window(const std::string &title, int width, int height)
   glfwSetKeyCallback(_window, glfw_key_callback);
 
   glfwSwapInterval(1);
+  glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Window::~Window() {
@@ -94,5 +95,25 @@ void Window::set_key_callback(
 }
 
 void Window::update() const { glfwSwapBuffers(_window); }
+
+void Window::get_cursor(double &xpos, double &ypos, bool clamp) const {
+  glfwGetCursorPos(_window, &xpos, &ypos);
+
+  if (clamp) {
+    // clamp the values of cursor
+    if (xpos < 0)
+      xpos = 0;
+    else if (xpos > _width)
+      xpos = _width;
+
+    if (ypos < 0)
+      ypos = 0;
+    else if (ypos > _height)
+      ypos = _height;
+  }
+}
+
+int Window::width() const { return _width; }
+int Window::height() const { return _height; }
 
 // private and protected functions

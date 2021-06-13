@@ -1,3 +1,5 @@
+#include "glm/ext/matrix_transform.hpp"
+#include "glm/ext/vector_float3.hpp"
 #define GLFW_INCLUDE_NONE
 #define __FILENAME__ "main.cpp"
 #define GLM_ENABLE_EXPERIMENTAL
@@ -102,10 +104,16 @@ int main() {
 
     rotation += 0.5f;
 
+    double xpos, ypos;
+    window.get_cursor(xpos, ypos);
+    xpos /= window.width();
+    ypos /= window.height();
+
     model =
         glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
 
-    view = glm::translate(view, glm::vec3(x, 0, z));
+    view = glm::lookAt(glm::vec3(x, 0, z), glm::vec3(xpos, ypos, 0),
+                       glm::vec3(0, 1, 0));
 
     proj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
 

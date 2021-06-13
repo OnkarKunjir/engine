@@ -16,8 +16,9 @@ class Window {
    */
 private:
   GLFWwindow *_window;
-  std::function<void(int, int, int, int)> _key_callback;
+  int _width, _height;
   bool _key_callback_warn;
+  std::function<void(int, int, int, int)> _key_callback;
 
 public:
   /**
@@ -59,4 +60,25 @@ public:
 
   /**Swaps buffer for current window*/
   void update() const;
+
+  /**
+   *Function to get cursor positon on current window.
+   *@param xpos x co-ordinate.
+   *@param ypos y co-orinate.
+   *@param clamp clamp if true, values of xpos and ypos between [0, width] and
+   *[0, height] respectivly.
+   */
+  void get_cursor(double &xpos, double &ypos, bool clamp = false) const;
+
+  /**
+   *Getter function for _width.
+   *@return the width of current window.
+   */
+  int width() const;
+
+  /**
+   *Getter function for _height.
+   *@return height of current window.
+   */
+  int height() const;
 };
