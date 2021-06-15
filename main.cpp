@@ -40,7 +40,7 @@ int main() {
   window.fill(0.07f, 0.13f, 0.17f);
   window.key_callback_warn(false);
 
-  float vertices[] = {
+  float pyramid_vertices[] = {
       // CORD / COLOR / TEXTURE/
       -0.5f, 0.0f, 0.5f,  0.83f, 0.70f, 0.44f, 0.0f, 0.0f, // 0
       -0.5f, 0.0f, -0.5f, 0.83f, 0.70f, 0.44f, 5.0f, 0.0f, // 1
@@ -49,18 +49,19 @@ int main() {
       0.0f,  0.8f, 0.0f,  0.92f, 0.86f, 0.76f, 2.5f, 5.0f, // 4
   };
 
-  unsigned int elements[] = {0, 1, 2, 0, 2, 3, 0, 1, 4,
-                             1, 2, 4, 2, 3, 4, 3, 0, 4};
+  unsigned int pyramid_index[] = {0, 1, 2, 0, 2, 3, 0, 1, 4,
+                                  1, 2, 4, 2, 3, 4, 3, 0, 4};
 
-  Buffer buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(vertices), vertices);
-  BufferLayout layout;
-  layout.push_float(3);
-  layout.push_float(3);
-  layout.push_float(2);
-  VertexArray square(buffer, layout);
-
-  Buffer element_buffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW,
-                        sizeof(elements), elements);
+  Buffer pyramid_buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW,
+                        sizeof(pyramid_vertices), pyramid_vertices);
+  BufferLayout pyramid_layout;
+  pyramid_layout.push_float(3);
+  pyramid_layout.push_float(3);
+  pyramid_layout.push_float(2);
+  Buffer pyramid_index_buffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW,
+                              sizeof(pyramid_index), pyramid_index);
+  VertexArray pyramid(pyramid_buffer, pyramid_index_buffer, pyramid_layout);
+  pyramid.unbind();
 
   Shader shader("assets/shader/vertex.glsl", "assets/shader/fragment.glsl",
                 "out_color");
@@ -86,7 +87,8 @@ int main() {
     shader.set_uniform_matrix4fv("model", glm::value_ptr(model));
     camera.apply(shader, "view", "proj");
 
-    glad_glDrawElements(GL_TRIANGLES, sizeof(elements) / sizeof(int),
+    pyramid.bind();
+    glad_glDrawElements(GL_TRIANGLES, sizeof(pyramid_index) / sizeof(int),
                         GL_UNSIGNED_INT, nullptr);
 
     window.update();
