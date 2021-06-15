@@ -4,6 +4,7 @@
 #include "render/window.hpp"
 #include "utils/log.hpp"
 
+#include <GLFW/glfw3.h>
 #include <cstdlib>
 #include <functional>
 #include <glad/gl.h>
@@ -34,7 +35,8 @@ void Window::glfw_key_callback(GLFWwindow *window, int key, int scancode,
 
 // constructors and destructors
 Window::Window(const std::string &title, int width, int height)
-    : _key_callback_warn(false), _width(width), _height(height) {
+    : _key_callback_warn(false), _width(width), _height(height),
+      _lastframe_time(0), _delta_time(0) {
 
   // initalizes glfw and creates window.
   glfwSetErrorCallback(glfw_error_callback);
@@ -77,7 +79,7 @@ Window::Window(const std::string &title, int width, int height)
 
   glfwSwapInterval(1);
   // FIXME: for testing purpose only.
-  glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+  // glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // opengl buffer options.
   glad_glEnable(GL_DEPTH_TEST); // enabeling depth test by default.
@@ -98,12 +100,17 @@ void Window::set_key_callback(
   _key_callback = callback;
 }
 
-void Window::update() const {
+void Window::update() {
   glfwSwapBuffers(_window);
   glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  float current_time = glfwGetTime();
+  _delta_time = current_time - _lastframe_time;
+  _lastframe_time = current_time;
 }
 
-void Window::get_cursor(double &xpos, double &ypos, bool clamp) const {
+void Window::get_cursor(double &xpos, double &ypos, bool norm,
+                        bool clamp) const {
   glfwGetCursorPos(_window, &xpos, &ypos);
 
   if (clamp) {
@@ -118,9 +125,23 @@ void Window::get_cursor(double &xpos, double &ypos, bool clamp) const {
     else if (ypos > _height)
       ypos = _height;
   }
+
+  if (norm) {
+    xpos = (xpos - ((float)_width / 2)) / _width;
+    ypos = (ypos - ((float)_height / 2)) / _height;
+  }
+}
+
+void Window::set_cursor(double xpos, double ypos) const {
+  glfwSetCursorPos(_window, xpos, ypos);
 }
 
 int Window::width() const { return _width; }
 int Window::height() const { return _height; }
+float Window::delta() const { return _delta_time; }
+
+void Window::fill(float r, float g, float b, float a) const {
+  glad_glClearColor(r, g, b, a);
+}
 
 // private and protected functions

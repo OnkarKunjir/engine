@@ -1,3 +1,4 @@
+#include <new>
 #define __FILENAME__ "shader.cpp"
 
 #include "render/shader.hpp"
@@ -15,6 +16,7 @@ Shader::Shader(const std::string &vs_path, const std::string &fs_path,
                const std::string &out) {
 
   // compile both the shaders.
+
   unsigned int vs = compile_shader(read_shader_src(vs_path), GL_VERTEX_SHADER);
   unsigned int fs =
       compile_shader(read_shader_src(fs_path), GL_FRAGMENT_SHADER);
@@ -49,6 +51,7 @@ void Shader::set_uniform_matrix4fv(const std::string &name, const float *matrix,
 
 // private functions
 std::string Shader::read_shader_src(const std::string &path) const {
+
   std::stringstream ss;
 
   std::fstream src;
@@ -68,6 +71,7 @@ std::string Shader::read_shader_src(const std::string &path) const {
 
 unsigned int Shader::compile_shader(const std::string &src,
                                     unsigned int shader_type) const {
+
   // shader type in string format.
   std::string shader_type_str =
       (shader_type == GL_VERTEX_SHADER ? "Vertex Shader" : "Fragment Shader");
@@ -88,11 +92,12 @@ unsigned int Shader::compile_shader(const std::string &src,
   glad_glGetShaderiv(shader, GL_COMPILE_STATUS, &compile_status);
 
   if (!compile_status) {
-    int log_len = 0;
-    char log[log_len];
 
+    int log_len = 0;
     glad_glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_len);
-    glad_glGetShaderInfoLog(shader, log_len, nullptr, log);
+
+    std::string log(log_len, 0);
+    glad_glGetShaderInfoLog(shader, log_len, nullptr, (char *)log.c_str());
 
     Log::error(__FILENAME__, "Failed to compile " + shader_type_str);
     Log::error(__FILENAME__, log);

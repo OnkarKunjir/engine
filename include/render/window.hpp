@@ -20,6 +20,9 @@ private:
   bool _key_callback_warn;
   std::function<void(int, int, int, int)> _key_callback;
 
+  float _lastframe_time;
+  float _delta_time;
+
 public:
   /**
    *Constructor
@@ -66,16 +69,25 @@ public:
    *Swaps buffer for current window and clears color buffer and depth buffer
    *bit.
    */
-  void update() const;
+  void update();
 
   /**
    *Function to get cursor positon on current window.
    *@param xpos x co-ordinate.
    *@param ypos y co-orinate.
+   *@param norm Normalize coordinates ie. make origin at the center or screen.
    *@param clamp clamp if true, values of xpos and ypos between [0, width] and
    *[0, height] respectivly.
    */
-  void get_cursor(double &xpos, double &ypos, bool clamp = false) const;
+  void get_cursor(double &xpos, double &ypos, bool norm = true,
+                  bool clamp = false) const;
+
+  /**
+   *Function to set cursor positon on current window.
+   *@param xpos x co-ordinate.
+   *@param ypos y co-ordinate.
+   */
+  void set_cursor(double xpos, double ypos) const;
 
   /**
    *Getter function for _width.
@@ -88,4 +100,19 @@ public:
    *@return height of current window.
    */
   int height() const;
+
+  /**
+   *Getter function for _delta_time.
+   *@return time requred to render last frame.*/
+  float delta() const;
+
+  /**
+   *Default backgroud color for window.
+   *@param r Red.
+   *@param g Green.
+   *@param b Blue.
+   *@param a Alpha.
+   */
+  void fill(float r = 0.0f, float g = 0.0f, float b = 0.0f,
+            float a = 1.0f) const;
 };

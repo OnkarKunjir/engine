@@ -1,11 +1,11 @@
-#include "glm/ext/matrix_transform.hpp"
-#include "glm/ext/vector_float3.hpp"
+#include "glm/fwd.hpp"
 #define GLFW_INCLUDE_NONE
 #define __FILENAME__ "main.cpp"
 #define GLM_ENABLE_EXPERIMENTAL
 
 #include "render/buffer.hpp"
 #include "render/bufferlayout.hpp"
+#include "render/camera.hpp"
 #include "render/shader.hpp"
 #include "render/texture.hpp"
 #include "render/vertexarray.hpp"
@@ -24,32 +24,16 @@
 int main() {
 
   Window window("title", 800, 800);
+  window.fill(0.07f, 0.13f, 0.17f);
 
-  float vertices[] = {
-      //   COORDINATES   /      COLORS       /   TexCoord
-      -0.5f, 0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 0 Top-left
-      0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // 1 Top-right
-      0.5f,  -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 2 Bottom-right
-      -0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f, 0.0f, 1.0f, // 3 Bottom-left
+  float vertices[] = {-0.5f, 0.0f, 0.5f,  0.83f, 0.70f, 0.44f, 0.0f, 0.0f,
+                      -0.5f, 0.0f, -0.5f, 0.83f, 0.70f, 0.44f, 5.0f, 0.0f,
+                      0.5f,  0.0f, -0.5f, 0.83f, 0.70f, 0.44f, 0.0f, 0.0f,
+                      0.5f,  0.0f, 0.5f,  0.83f, 0.70f, 0.44f, 5.0f, 0.0f,
+                      0.0f,  0.8f, 0.0f,  0.92f, 0.86f, 0.76f, 2.5f, 5.0f};
 
-      -0.5f, 0.5f,  -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 4 Top-left
-      0.5f,  0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // 5 Top-right
-      0.5f,  -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // 6 Bottom-right
-      -0.5f, -0.5f, -0.5f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, // 7 Bottom-left
-
-      -0.5f, 0.5f,  0.5f,  1.0f, 0.0f, 0.0f, 1.0f, 0.0f, // 8 Top-left
-      -0.5f, -0.5f, 0.5f,  1.0f, 1.0f, 1.0f, 1.0f, 1.0f, // 9 Bottom-left
-      -0.5f, 0.5f,  -0.5f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // 10 Top-left
-
-      0.5f,  0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f, // 11 Top-right
-      0.5f,  -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, 0.0f, 1.0f, // 12 Bottom-right
-
-  };
-
-  unsigned int elements[] = {
-      0,  1, 2, 2, 3, 0,  4,  5, 6, 6,  7,  4,
-      10, 7, 9, 9, 8, 10, 11, 5, 6, 11, 12, 6,
-  };
+  unsigned int elements[] = {0, 1, 2, 0, 2, 3, 0, 1, 4,
+                             1, 2, 4, 2, 3, 4, 3, 0, 4};
 
   Buffer buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(vertices), vertices);
   BufferLayout layout;
@@ -61,8 +45,8 @@ int main() {
   Buffer element_buffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW,
                         sizeof(elements), elements);
 
-  Shader s("assets/shader/vertex.glsl", "assets/shader/fragment.glsl",
-           "out_color");
+  Shader shader("assets/shader/vertex.glsl", "assets/shader/fragment.glsl",
+                "out_color");
 
   Texture cat("assets/textures/brick.png", GL_TEXTURE0, GL_RGBA);
   cat.parameter(GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -70,50 +54,45 @@ int main() {
 
   float rotation = 0.0f;
 
-  float x = 0;
-  float z = -2.0f;
+  Camera camera(glm::vec3(0, 0, -2.0f), glm::vec3(0, 0, 1));
 
   window.set_key_callback(
-      [&x, &z](int key, int scancode, int action, int mods) {
+      [&camera, &window](int key, int scancode, int action, int mods) {
+        int direction = 0;
         switch (key) {
-        case GLFW_KEY_A:
-          x += 0.1f;
-          break;
-        case GLFW_KEY_D:
-          x -= 0.1f;
-          break;
         case GLFW_KEY_W:
-          z += 0.1f;
+          direction |= CAMERA_MOVE_FORWARD;
           break;
         case GLFW_KEY_S:
-          z -= 0.1f;
+          direction |= CAMERA_MOVE_BACKWARD;
+          break;
+
+        case GLFW_KEY_A:
+          direction |= CAMERA_MOVE_LEFT;
+          break;
+        case GLFW_KEY_D:
+          direction |= CAMERA_MOVE_RIGHT;
           break;
         }
+        camera.move(direction, window.delta());
       });
+
+  window.set_cursor((float)window.width() / 2, (float)window.height() / 2);
   while (window.is_active()) {
 
     glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 proj = glm::mat4(1.0f);
-
-    rotation += 0.5f;
+    rotation += 2.0f;
 
     double xpos, ypos;
     window.get_cursor(xpos, ypos);
-    xpos /= window.width();
-    ypos /= window.height();
+    window.set_cursor((float)window.width() / 2, (float)window.height() / 2);
+
+    camera.rotate(xpos, ypos);
 
     model =
         glm::rotate(model, glm::radians(rotation), glm::vec3(0.0f, 1.0f, 0.0f));
-
-    view = glm::lookAt(glm::vec3(x, 0, z), glm::vec3(xpos, ypos, 0),
-                       glm::vec3(0, 1, 0));
-
-    proj = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 100.0f);
-
-    s.set_uniform_matrix4fv("model", glm::value_ptr(model));
-    s.set_uniform_matrix4fv("view", glm::value_ptr(view));
-    s.set_uniform_matrix4fv("proj", glm::value_ptr(proj));
+    shader.set_uniform_matrix4fv("model", glm::value_ptr(model));
+    camera.apply(shader, "view", "proj");
 
     glad_glDrawElements(GL_TRIANGLES, sizeof(elements) / sizeof(int),
                         GL_UNSIGNED_INT, nullptr);
