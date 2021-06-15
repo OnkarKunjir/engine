@@ -5,11 +5,10 @@
 #define CAMERA_MOVE_LEFT 0x4
 #define CAMERA_MOVE_RIGHT 0x8
 
-#include "glm/fwd.hpp"
+#include "render/shader.hpp"
+
 #include <glm/glm.hpp>
 #include <string>
-
-#include "render/shader.hpp"
 
 class Camera {
 private:
@@ -25,12 +24,12 @@ public:
   /**
    *Constructor
    *@param positon Initial position of camera.
-   *@param orientation Direction to look at form positon.
+   *@param orientation Direction to look at from positon.
    *@param speed Speed with camera should move.
    */
   Camera(const glm::vec3 &position, const glm::vec3 &orientation,
          float fov = 45.0f, float aspect_ratio = 1.0f, float near = 0.1f,
-         float far = 100.0f, float speed = 3.0f);
+         float far = 100.0f, float speed = 1.0f, float sensitivity = 100.0f);
 
   ~Camera();
   /**

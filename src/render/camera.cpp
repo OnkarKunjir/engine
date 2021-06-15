@@ -1,15 +1,10 @@
-#include "glm/ext/quaternion_trigonometric.hpp"
-#include "glm/gtx/dual_quaternion.hpp"
-#include "glm/gtx/quaternion.hpp"
-#include "glm/gtx/string_cast.hpp"
-#include <cstdlib>
-#include <string>
 #define __FILENAME__ "camera.cpp"
 
-#include "glm/trigonometric.hpp"
 #include "render/camera.hpp"
 #include "render/shader.hpp"
 #include "utils/log.hpp"
+
+#include <string>
 
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -20,9 +15,10 @@
 
 Camera::Camera(const glm::vec3 &position, const glm::vec3 &orientation,
                float fov, float aspect_ratio, float near, float far,
-               float speed)
+               float speed, float sensitivity)
     : _position(position), _orientation(orientation),
-      _up(glm::vec3(0.0f, 1.0f, 0.0f)), _speed(speed), _sensitivity(200.0f),
+      _up(glm::vec3(0.0f, 1.0f, 0.0f)), _speed(speed),
+      _sensitivity(sensitivity),
       _proj(glm::perspective(glm::radians(fov), aspect_ratio, near, far)) {}
 
 Camera::~Camera() {}

@@ -26,17 +26,18 @@ void Window::glfw_key_callback(GLFWwindow *window, int key, int scancode,
     ctx->_key_callback(key, scancode, action, mods);
   } catch (std::bad_function_call) {
     // warn about callback function not provided only once.
-    if (!ctx->_key_callback_warn) {
+    if (!ctx->_warn) {
       Log::warn(__FILENAME__, "Key callback function not provided.");
-      ctx->_key_callback_warn = true;
+      ctx->_warn = true;
     }
   }
 }
 
 // constructors and destructors
 Window::Window(const std::string &title, int width, int height)
-    : _key_callback_warn(false), _width(width), _height(height),
-      _lastframe_time(0), _delta_time(0) {
+
+    : _warn(false), _width(width), _height(height), _lastframe_time(0),
+      _delta_time(0) {
 
   // initalizes glfw and creates window.
   glfwSetErrorCallback(glfw_error_callback);
@@ -95,6 +96,8 @@ Window::~Window() {
 bool Window::is_active() const { return !glfwWindowShouldClose(_window); }
 void Window::poll_events() const { glfwPollEvents(); }
 
+void Window::key_callback_warn(bool warn) { _warn = !warn; }
+
 void Window::set_key_callback(
     std::function<void(int, int, int, int)> callback) {
   _key_callback = callback;
@@ -143,5 +146,10 @@ float Window::delta() const { return _delta_time; }
 void Window::fill(float r, float g, float b, float a) const {
   glad_glClearColor(r, g, b, a);
 }
+
+int Window::get_key(int key) const { return glfwGetKey(_window, key); }
+
+bool Window::press(int key) const { return get_key(key) == GLFW_PRESS; }
+bool Window::release(int key) const { return get_key(key) == GLFW_RELEASE; }
 
 // private and protected functions

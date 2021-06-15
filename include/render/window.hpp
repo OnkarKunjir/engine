@@ -17,7 +17,7 @@ class Window {
 private:
   GLFWwindow *_window;
   int _width, _height;
-  bool _key_callback_warn;
+  bool _warn;
   std::function<void(int, int, int, int)> _key_callback;
 
   float _lastframe_time;
@@ -58,6 +58,11 @@ public:
    */
   void poll_events() const;
 
+  /**
+   *Function to disable or enable warning for key callback not provided.
+   *@param warn gives warning if true.
+   */
+  void key_callback_warn(bool warn = true);
   /**
    *Sets keycallback.
    *@param callback(int key, int scancode, int action, int mods) function is
@@ -115,4 +120,20 @@ public:
    */
   void fill(float r = 0.0f, float g = 0.0f, float b = 0.0f,
             float a = 1.0f) const;
+
+  /**
+   *Function to get key state.
+   *@param key key to check. eg. GLFW_KEY_A
+   *@return GLFW_PRESS or GLFW_RELEASE.
+   */
+  int get_key(int key) const;
+
+  /**
+   *@return true if key is pressed.
+   */
+  bool press(int key) const;
+  /**
+   *@return true if key is released.
+   */
+  bool release(int key) const;
 };
