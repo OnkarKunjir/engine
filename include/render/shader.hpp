@@ -36,6 +36,13 @@ public:
   void set_uniform_matrix4fv(const std::string &name, const float *matrix,
                              bool transpose = false) const;
 
+  /**
+   *Set value of uniform to an float type array of size 3.
+   *@param name Specify name of uniform.
+   *@param arr float array of size 3.
+   */
+  void set_uniform_float3fv(const std::string &name, const float *arr) const;
+
 private:
   /**
    *compiles shader program

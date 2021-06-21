@@ -12,10 +12,12 @@ public:
    *@param size size of buffer in bytes
    *@param data data to be stored in buffer
    */
-  Buffer(unsigned int buffer_type, unsigned int usage, unsigned int size,
-         void *data);
+  Buffer(unsigned int buffer_type, unsigned int usage, unsigned int size = 0,
+         void *data = nullptr);
   ~Buffer();
 
   /**Binds current buffer*/
   void bind() const;
+
+  void data(unsigned int size, void *data) const;
 };

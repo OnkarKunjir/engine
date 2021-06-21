@@ -8,9 +8,12 @@ VertexArray::VertexArray(const Buffer &buffer, const Buffer &index,
                          const BufferLayout &layout) {
   glad_glGenVertexArrays(1, &_id);
   bind();
+
   buffer.bind();
   layout.bind();
   index.bind();
+
+  unbind();
 }
 
 VertexArray::~VertexArray() { glad_glDeleteVertexArrays(1, &_id); }

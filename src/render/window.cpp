@@ -33,9 +33,16 @@ void Window::glfw_key_callback(GLFWwindow *window, int key, int scancode,
   }
 }
 
-// constructors and destructors
-Window::Window(const std::string &title, int width, int height)
+void Window::opengl_debug_callback(unsigned int source, unsigned int type,
+                                   unsigned int id, unsigned int severity,
+                                   int length, const char *message,
+                                   const void *userParam) {
+  Log::error("OpenGL", message);
+  exit(EXIT_FAILURE);
+}
 
+// constructors and destructors
+Window::Window(const std::string &title, int width, int height, bool debug)
     : _warn(false), _width(width), _height(height), _lastframe_time(0),
       _delta_time(0) {
 
@@ -85,6 +92,12 @@ Window::Window(const std::string &title, int width, int height)
   // opengl buffer options.
   glad_glEnable(GL_DEPTH_TEST); // enabeling depth test by default.
   glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  // opengl error callback.
+  if (debug) {
+    glad_glEnable(GL_DEBUG_OUTPUT);
+    glad_glDebugMessageCallback(opengl_debug_callback, nullptr);
+  }
 }
 
 Window::~Window() {

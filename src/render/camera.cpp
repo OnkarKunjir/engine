@@ -66,3 +66,5 @@ void Camera::rotate(float x, float y) {
   // chaning yaw. (roatation along y axis)
   _orientation = glm::rotate(_orientation, glm::radians(-roty), _up);
 }
+
+const float *Camera::position() const { return glm::value_ptr(_position); }

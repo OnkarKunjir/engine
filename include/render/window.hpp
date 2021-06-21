@@ -31,7 +31,7 @@ public:
    *@param width widht of the window
    *@param height height of the window
    */
-  Window(const std::string &title, int width, int height);
+  Window(const std::string &title, int width, int height, bool debug = false);
   ~Window();
 
   /**
@@ -47,6 +47,13 @@ public:
   static void glfw_key_callback(GLFWwindow *window, int key, int scancode,
                                 int action, int mods);
 
+  /**
+   *OpenGL debug callback.
+   */
+  static void opengl_debug_callback(unsigned int source, unsigned int type,
+                                    unsigned int id, unsigned int severity,
+                                    int length, const char *message,
+                                    const void *userParam);
   /**
    *Check if window should close
    *@return true if window was requested to close else false

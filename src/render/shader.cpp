@@ -49,6 +49,11 @@ void Shader::set_uniform_matrix4fv(const std::string &name, const float *matrix,
   glad_glUniformMatrix4fv(get_uniform(name), 1, transpose, matrix);
 }
 
+void Shader::set_uniform_float3fv(const std::string &name,
+                                  const float *arr) const {
+  glad_glUniform3fv(get_uniform(name), 1, arr);
+}
+
 // private functions
 std::string Shader::read_shader_src(const std::string &path) const {
 

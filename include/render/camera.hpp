@@ -25,7 +25,6 @@ public:
    *Constructor
    *@param positon Initial position of camera.
    *@param orientation Direction to look at from positon.
-   *@param speed Speed with camera should move.
    */
   Camera(const glm::vec3 &position, const glm::vec3 &orientation,
          float fov = 45.0f, float aspect_ratio = 1.0f, float near = 0.1f,
@@ -51,4 +50,6 @@ public:
    *Rotates the camera to given x and y cooridinates.
    */
   void rotate(float x, float y);
+
+  const float *position() const;
 };
