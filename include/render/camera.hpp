@@ -31,6 +31,12 @@ public:
          float far = 100.0f, float speed = 1.0f, float sensitivity = 100.0f);
 
   ~Camera();
+
+  /**
+   *Function to set camera speed.
+   */
+  void speed(float speed);
+
   /**
    *Function applies the view and perspective projection.
    *@param shader Shader to witch uniforms of view and projection matrix to be
@@ -43,6 +49,10 @@ public:
 
   /**
    *Move the camera in specified direction.
+   *@pram direction Specify the directions to move camera in.
+   *(CAMERA_MOVE_FORWARD, CAMERA_MOVE_BACKWARD, CAMERA_MOVE_LEFT,
+   *CAMERA_MOVE_RIGHT)
+   *@pram delta Specify time required to render last frame.
    */
   void move(int direction, float delta = 1.0f);
 

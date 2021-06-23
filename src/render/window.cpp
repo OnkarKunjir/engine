@@ -1,3 +1,4 @@
+#include <utility>
 #define GLFW_INCLUDE_NONE
 #define __FILENAME__ "window.cpp"
 
@@ -125,8 +126,8 @@ void Window::update() {
   _lastframe_time = current_time;
 }
 
-void Window::get_cursor(double &xpos, double &ypos, bool norm,
-                        bool clamp) const {
+std::pair<double, double> Window::get_cursor(bool norm, bool clamp) const {
+  double xpos, ypos;
   glfwGetCursorPos(_window, &xpos, &ypos);
 
   if (clamp) {
@@ -146,6 +147,7 @@ void Window::get_cursor(double &xpos, double &ypos, bool norm,
     xpos = (xpos - ((float)_width / 2)) / _width;
     ypos = (ypos - ((float)_height / 2)) / _height;
   }
+  return std::make_pair(xpos, ypos);
 }
 
 void Window::set_cursor(double xpos, double ypos) const {

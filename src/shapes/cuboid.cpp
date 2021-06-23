@@ -7,6 +7,7 @@ Cuboid::Cuboid(float x, float y, float z, float length, float width,
       _vao(VertexArray(_vertex, _index, _layout)) {
 
   float vertex[] = {
+      //          CO-ORDINATES           /     COLOR
       x,          y,          z,         1.0f, 1.0f, 1.0f, // 0
       x + length, y,          z,         1.0f, 1.0f, 1.0f, // 1
       x + length, y - height, z,         1.0f, 1.0f, 1.0f, // 2
@@ -26,7 +27,6 @@ Cuboid::Cuboid(float x, float y, float z, float length, float width,
       1, 5, 6, 6, 2, 1, // right
       0, 1, 5, 5, 4, 0, // top
       2, 3, 7, 7, 6, 2, // bottom
-
   };
 
   _vao.bind();

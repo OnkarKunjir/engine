@@ -23,6 +23,10 @@ Camera::Camera(const glm::vec3 &position, const glm::vec3 &orientation,
 
 Camera::~Camera() {}
 
+// getters and setter
+
+void Camera::speed(float speed) { _speed = speed; }
+
 // public function.
 void Camera::apply(const Shader &shader, const std::string &view_uniform,
                    const std::string &proj_uniform) const {

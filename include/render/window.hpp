@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <utility>
 #define GLFW_INCLUDE_NONE
 
 #include <GLFW/glfw3.h>
@@ -91,8 +92,8 @@ public:
    *@param clamp clamp if true, values of xpos and ypos between [0, width] and
    *[0, height] respectivly.
    */
-  void get_cursor(double &xpos, double &ypos, bool norm = true,
-                  bool clamp = false) const;
+  std::pair<double, double> get_cursor(bool norm = true,
+                                       bool clamp = false) const;
 
   /**
    *Function to set cursor positon on current window.
