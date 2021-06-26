@@ -11,11 +11,11 @@ private:
   Window _window;
 
   // member required to draw.
-  Buffer _vertex;
-  Buffer _index;
-  BufferLayout _layout;
-  VertexArray _vao;
-  Shader _shader;
+  Buffer _vertex;       // vertex buffer.
+  Buffer _index;        // index buffer.
+  BufferLayout _layout; // vertex buffer layout.
+  VertexArray _vao;     // engine 2d vertex array buffer.
+  Shader _shader;       // default solid shader.
 
   glm::mat4 _proj; // projection matrix.
 
@@ -28,9 +28,18 @@ public:
    */
   Engine2d(const std::string &title, int width, int height);
 
-  // function to access window properties
+  /**
+   *  @brief Function to check if window is active.
+   *  @return true if window is active else false.
+   */
   bool is_active() const;
+  /**
+   *  @brief Function to poll events from IO device.
+   */
   void poll_events() const;
+  /**
+   *  @brief Function to update display.
+   */
   void update();
 
   /**
