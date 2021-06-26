@@ -1,4 +1,3 @@
-#include <utility>
 #define GLFW_INCLUDE_NONE
 #define __FILENAME__ "window.cpp"
 
@@ -6,10 +5,10 @@
 #include "utils/log.hpp"
 
 #include <GLFW/glfw3.h>
-#include <cstdlib>
 #include <functional>
 #include <glad/gl.h>
 #include <string>
+#include <utility>
 
 // TODO: add support to change window hints.
 // TODO: make depth test optional.
@@ -39,7 +38,6 @@ void Window::opengl_debug_callback(unsigned int source, unsigned int type,
                                    int length, const char *message,
                                    const void *userParam) {
   Log::error("OpenGL", message);
-  exit(EXIT_FAILURE);
 }
 
 // constructors and destructors
@@ -53,16 +51,14 @@ Window::Window(const std::string &title, int width, int height, bool debug)
   // initalizing glfw.
   if (!glfwInit()) {
     Log::error(__FILENAME__, "Failed to initalize glfw");
-    exit(EXIT_FAILURE);
   }
 
   // creating window according to parameters provided.
   glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
   _window = glfwCreateWindow(_width, _height, title.c_str(), nullptr, nullptr);
   if (_window == nullptr) {
-    Log::error(__FILENAME__, "Failed to create window");
     glfwTerminate();
-    exit(EXIT_FAILURE);
+    Log::error(__FILENAME__, "Failed to create window");
   }
 
   // make current window context for opengl.
@@ -71,10 +67,9 @@ Window::Window(const std::string &title, int width, int height, bool debug)
   // load opengl functions.
   int version = gladLoadGL(glfwGetProcAddress);
   if (version == 0) {
-    Log::error(__FILENAME__, "Failed to load glad");
     glfwDestroyWindow(_window);
     glfwTerminate();
-    exit(EXIT_FAILURE);
+    Log::error(__FILENAME__, "Failed to load glad");
   } else {
     Log::message(__FILENAME__, "OpenGL Version - " +
                                    std::to_string(GLAD_VERSION_MAJOR(version)) +

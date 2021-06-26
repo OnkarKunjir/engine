@@ -18,5 +18,6 @@ class Log {
 public:
   static void message(const std::string module, const std::string msg);
   static void warn(const std::string module, const std::string msg);
-  static void error(const std::string module, const std::string msg);
+  static void error(const std::string module, const std::string msg,
+                    bool terminate = true);
 };

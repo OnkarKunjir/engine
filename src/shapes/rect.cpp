@@ -1,33 +1,25 @@
-#include "render/bufferlayout.hpp"
+#define __FILENAME__ "Rect"
+
+#include <string>
+
 #include "shapes/rect.hpp"
+#include "utils/log.hpp"
 
-Rect::Rect(float x, float y, float width, float height, float z)
-    : _vertex(Buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW)), _layout(BufferLayout()),
-      _index(Buffer(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW)),
-      _vao(_vertex, _index, _layout) {
+Rect::Rect(float x, float y, float width, float height)
+    : _x(x), _y(y), _width(width), _height(height) {}
 
-  _vao.bind();
-
-  float vertex[] = {
-      x,         y,          z, 1.0f, 1.0f, 1.0f, // 0
-      x + width, y,          z, 1.0f, 1.0f, 1.0f, // 1
-      x + width, y - height, z, 1.0f, 1.0f, 1.0f, // 2
-      x,         y - height, z, 1.0f, 1.0f, 1.0f, // 3
-  };
-  unsigned int index[] = {0, 1, 2, 2, 3, 0};
-
-  _vertex.data(sizeof(vertex), vertex);
-  _index.data(sizeof(index), index);
-
-  _layout.push_float(3);
-  _layout.push_float(3);
-  _layout.bind();
-
-  _vao.unbind();
-}
-
-void Rect::draw() {
-  _vao.bind();
-  glad_glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-  _vao.unbind();
+float Rect::operator[](unsigned int n) const {
+  switch (n) {
+  case 0:
+    return _x;
+  case 1:
+    return _y;
+  case 2:
+    return _width;
+  case 3:
+    return _height;
+  default:
+    Log::error(__FILENAME__, "Index out of bound " + std::to_string(n));
+    return 0;
+  }
 }

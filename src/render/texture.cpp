@@ -3,7 +3,6 @@
 #include "render/texture.hpp"
 #include "utils/log.hpp"
 
-#include <cstdlib>
 #include <glad/gl.h>
 #include <stb_image.h>
 #include <string>
@@ -17,7 +16,6 @@ Texture::Texture(const std::string &path, unsigned int texture_unit,
   // check if image was read successfully or not.
   if (data == nullptr) {
     Log::error(__FILENAME__, "Failed to open texture file: " + path);
-    exit(EXIT_FAILURE);
   }
 
   // actiavte perticular texture uint
