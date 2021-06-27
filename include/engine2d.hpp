@@ -1,10 +1,11 @@
 #pragma once
 
-#include <glm/glm.hpp>
-#include <string>
-
 #include "render/render.hpp"
 #include "shapes/rect.hpp"
+
+#include <glm/glm.hpp>
+#include <string>
+#include <vector>
 
 class Engine2d {
 private:
@@ -51,4 +52,10 @@ public:
    */
   void draw(const Rect &rect, float r = 1.0f, float g = 1.0f,
             float b = 1.0f) const;
+
+  /**
+   *  @brief Function to draw multiple rect on screen.
+   *  @pram rect_arr vector containing rect to draw.
+   */
+  void draw(const std::vector<Rect> &rect_arr) const;
 };

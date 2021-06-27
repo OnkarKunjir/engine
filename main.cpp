@@ -18,10 +18,12 @@
 
 int main() {
   Engine2d engine("engine", 800, 800);
-  Rect r(0, 0, 100, 100);
   while (engine.is_active()) {
 
-    engine.draw(r);
+    engine.draw({
+        {100, 100, 20, 30},
+        {200, 300, 40, 30},
+    });
 
     engine.poll_events();
     engine.update();

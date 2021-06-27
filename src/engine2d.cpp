@@ -1,10 +1,11 @@
-#include <glad/gl.h>
+#define __FILENAME__ "Engine2d"
 
 #include "engine2d.hpp"
-#include "glm/ext/matrix_clip_space.hpp"
-#include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "render/window.hpp"
+#include "utils/log.hpp"
+
+#include <glad/gl.h>
+#include <vector>
 
 Engine2d::Engine2d(const std::string &title, int width, int height)
     : _window(Window(title, width, height, false)),
@@ -54,5 +55,40 @@ void Engine2d::draw(const Rect &rect, float r, float g, float b) const {
   _shader.bind();
   _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
   glad_glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, nullptr);
+  _vao.unbind();
+}
+
+void Engine2d::draw(const std::vector<Rect> &rect_arr) const {
+  std::vector<float> vertex;
+  std::vector<unsigned int> index;
+
+  unsigned int i = 0;
+  float x, y, width, height;
+
+  for (auto &rect : rect_arr) {
+    x = rect[0];
+    y = rect[1];
+    width = rect[2];
+    height = rect[3];
+
+    index.insert(index.end(), {i, i + 1, i + 2, i + 2, i + 3, i});
+    i += 4;
+
+    vertex.insert(vertex.end(),
+                  {
+                      x,         y,          1.0f, 1.0f, 1.0f, // 0
+                      x + width, y,          1.0f, 1.0f, 1.0f, // 1
+                      x + width, y + height, 1.0f, 1.0f, 1.0f, // 2
+                      x,         y + height, 1.0f, 1.0f, 1.0f, // 3
+                  });
+  }
+
+  _vertex.data(vertex.size() * sizeof(float), &vertex[0]);
+  _index.data(vertex.size() * sizeof(int), &index[0]);
+
+  _vao.bind();
+  _shader.bind();
+  _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
+  glad_glDrawElements(GL_TRIANGLES, index.size(), GL_UNSIGNED_INT, nullptr);
   _vao.unbind();
 }
