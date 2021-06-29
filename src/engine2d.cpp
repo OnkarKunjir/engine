@@ -8,7 +8,7 @@
 #include <vector>
 
 Engine2d::Engine2d(const std::string &title, int width, int height)
-    : _window(Window(title, width, height, false)),
+    : _window(Window(title, width, height, 0, false)),
       _vertex(GL_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       _index(GL_ELEMENT_ARRAY_BUFFER, GL_DYNAMIC_DRAW),
       _vao(_vertex, _index, _layout),
@@ -26,6 +26,7 @@ Engine2d::Engine2d(const std::string &title, int width, int height)
   _window.fill(); // make backgroud of window balck.
   _window.key_callback_warn(
       false); // turn off warning for key callback not set.
+  _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
 }
 
 bool Engine2d::is_active() const { return _window.is_active(); }
@@ -53,7 +54,6 @@ void Engine2d::draw(const Rect &rect, float r, float g, float b) const {
 
   _vao.bind();
   _shader.bind();
-  _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
   glad_glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, nullptr);
   _vao.unbind();
 }
@@ -86,9 +86,17 @@ void Engine2d::draw(const std::vector<Rect> &rect_arr) const {
   _vertex.data(vertex.size() * sizeof(float), &vertex[0]);
   _index.data(vertex.size() * sizeof(int), &index[0]);
 
+  _index_count = index.size();
+
   _vao.bind();
   _shader.bind();
-  _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
   glad_glDrawElements(GL_TRIANGLES, index.size(), GL_UNSIGNED_INT, nullptr);
+  _vao.unbind();
+}
+
+void Engine2d::draw() const {
+  _vao.bind();
+  _shader.bind();
+  glad_glDrawElements(GL_TRIANGLES, _index_count, GL_UNSIGNED_INT, nullptr);
   _vao.unbind();
 }

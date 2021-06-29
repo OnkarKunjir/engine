@@ -32,7 +32,8 @@ public:
    *@param width widht of the window
    *@param height height of the window
    */
-  Window(const std::string &title, int width, int height, bool debug = false);
+  Window(const std::string &title, int width, int height, int swap_interval = 1,
+         bool debug = false);
   ~Window();
 
   /**

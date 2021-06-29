@@ -41,7 +41,8 @@ void Window::opengl_debug_callback(unsigned int source, unsigned int type,
 }
 
 // constructors and destructors
-Window::Window(const std::string &title, int width, int height, bool debug)
+Window::Window(const std::string &title, int width, int height,
+               int swap_interval, bool debug)
     : _warn(false), _width(width), _height(height), _lastframe_time(0),
       _delta_time(0) {
 
@@ -81,7 +82,7 @@ Window::Window(const std::string &title, int width, int height, bool debug)
   glfwSetWindowUserPointer(_window, this);
   glfwSetKeyCallback(_window, glfw_key_callback);
 
-  glfwSwapInterval(1);
+  glfwSwapInterval(swap_interval);
   // FIXME: for testing purpose only.
   // glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 

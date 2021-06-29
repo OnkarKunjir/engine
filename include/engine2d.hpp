@@ -8,7 +8,7 @@
 #include <vector>
 
 class Engine2d {
-private:
+protected:
   Window _window;
 
   // member required to draw.
@@ -19,6 +19,8 @@ private:
   Shader _shader;       // default solid shader.
 
   glm::mat4 _proj; // projection matrix.
+
+  mutable int _index_count = 0;
 
 public:
   /**
@@ -58,4 +60,6 @@ public:
    *  @pram rect_arr vector containing rect to draw.
    */
   void draw(const std::vector<Rect> &rect_arr) const;
+
+  void draw() const;
 };
