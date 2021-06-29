@@ -29,6 +29,6 @@ add_custom_target(
 
 add_custom_target(
   update_assets COMMAND cp -ru "${CMAKE_CURRENT_SOURCE_DIR}/assets/"
-                        "${CMAKE_CURRENT_BINARY_DIR}/")
+                        "${CMAKE_BINARY_DIR}/")
 
 add_dependencies(engine update_assets)
