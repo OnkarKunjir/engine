@@ -23,7 +23,7 @@ target_link_libraries(engine-test engine)
 
 # custom targets
 add_custom_target(
-  test
+  run-engine-test
   DEPENDS engine-test
   COMMAND ./engine-test)
 
