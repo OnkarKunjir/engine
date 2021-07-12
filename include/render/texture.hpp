@@ -11,29 +11,31 @@ private:
   int _width, _height, _channels;
 
 public:
-  /**Constructor
-   *@param path path of texture file.
-   *@param texture_unit texture unit to bind image with.
-   *@param format format of image eg. GL_RGBA, GL_RGB,..
+  /**
+   *  Constructor
+   *  @param path Specify path of texture.
+   *  @param texture_unit Specify texture unit to bind image with.
+   *  @param format Specify format of texture. eg. GL_RGBA, GL_RGB,..
    */
   Texture(const std::string &path, unsigned int texture_unit,
           unsigned int format);
+
   ~Texture();
 
   /**Binds current texture*/
   void bind() const;
 
-  /**Set parameter for current texture.
-   *uses glad_glTexParameteri to set parameter values.
-   *@param pname parameter name.
-   *@param param parameter value for pname.
+  /**
+   *  Set parameter for texture.
+   *  @param pname parameter name.
+   *  @param param parameter value for pname.
    */
   void parameter(unsigned int pname, int param) const;
 
-  /**Set parameter for current texture.
-   *uses glad_glTexParameterf to set parameter values.
-   *@param pname parameter name.
-   *@param param parameter value for pname.
+  /**
+   *  Set parameter for current texture.
+   *  @param pname parameter name.
+   *  @param param parameter value for pname.
    */
   void parameter(unsigned int pname, float param) const;
 };

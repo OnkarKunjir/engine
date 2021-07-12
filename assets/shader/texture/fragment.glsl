@@ -27,5 +27,6 @@ void main(){
     // calculate total intensity.
     float intensity = ambient_intensity + diffused_intensity + specular_intensity;
 
-    out_color = texture(tex, vout_texpos) * vec4(light_color, 1.0) * (intensity);
+    // out_color = texture(tex, vout_texpos) * vec4(light_color, 1.0) * (intensity);
+    out_color = texture(tex, vout_texpos);
 }

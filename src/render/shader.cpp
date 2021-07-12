@@ -8,8 +8,6 @@
 #include <sstream>
 #include <string>
 
-// TODO: better error handling
-
 Shader::Shader(const std::string &vs_path, const std::string &fs_path,
                const std::string &out) {
 

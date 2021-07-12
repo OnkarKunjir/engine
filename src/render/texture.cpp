@@ -1,4 +1,4 @@
-#define __FILENAME__ "texture.hpp"
+#define __FILENAME__ "Texture"
 
 #include "render/texture.hpp"
 #include "utils/log.hpp"
@@ -20,6 +20,8 @@ Texture::Texture(const std::string &path, unsigned int texture_unit,
 
   // actiavte perticular texture uint
   glad_glActiveTexture(texture_unit);
+
+  glad_glGenTextures(1, &_id);
 
   bind();
 
