@@ -67,12 +67,10 @@ public:
    *  Function to get cursor positon on current window.
    *  @param xpos x co-ordinate.
    *  @param ypos y co-orinate.
-   *  @param norm Normalize coordinates ie. make origin at the center or screen.
-   *  @param clamp clamp if true, values of xpos and ypos between [0, width] and
-   *  [0, height] respectivly.
+   *  @param norm Normalize cursor positon concidering origin at center of
+   *  screen.
    */
-  std::pair<double, double> get_cursor(bool norm = true,
-                                       bool clamp = false) const;
+  std::pair<double, double> get_cursor(bool norm = true) const;
 
   /**
    *  Function to set cursor positon on current window.

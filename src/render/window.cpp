@@ -96,26 +96,12 @@ void Window::update() {
   _lastframe_time = current_time;
 }
 
-std::pair<double, double> Window::get_cursor(bool norm, bool clamp) const {
+std::pair<double, double> Window::get_cursor(bool norm) const {
   double xpos, ypos;
   glfwGetCursorPos(_window, &xpos, &ypos);
-
-  if (clamp) {
-    // clamp the values of cursor
-    if (xpos < 0)
-      xpos = 0;
-    else if (xpos > _width)
-      xpos = _width;
-
-    if (ypos < 0)
-      ypos = 0;
-    else if (ypos > _height)
-      ypos = _height;
-  }
-
   if (norm) {
-    xpos = (xpos - ((float)_width / 2)) / _width;
-    ypos = (ypos - ((float)_height / 2)) / _height;
+    xpos = (xpos - ((double)_width / 2)) / _width;
+    ypos = (ypos - ((double)_height / 2)) / _height;
   }
   return std::make_pair(xpos, ypos);
 }
