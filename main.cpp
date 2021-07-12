@@ -6,6 +6,23 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+int move(const Window &window) {
+  int direction = 0;
+  if (window.press(GLFW_KEY_W))
+    direction |= CAMERA_MOVE_FORWARD;
+
+  if (window.press(GLFW_KEY_S))
+    direction |= CAMERA_MOVE_BACKWARD;
+
+  if (window.press(GLFW_KEY_A))
+    direction |= CAMERA_MOVE_LEFT;
+
+  if (window.press(GLFW_KEY_D))
+    direction |= CAMERA_MOVE_RIGHT;
+
+  return direction;
+}
+
 int main() {
   Window window("Test", 800, 800, 0, true);
 
@@ -36,15 +53,20 @@ int main() {
   glm::mat4 identity = glm::mat4(1.0f);
 
   color.set_uniform_matrix4fv("model", glm::value_ptr(identity));
-  color.set_uniform_matrix4fv("view", glm::value_ptr(identity));
-  color.set_uniform_matrix4fv("proj", glm::value_ptr(identity));
 
   color.bind();
 
+  Camera camera(glm::vec3(0, 0, -2), glm::vec3(0, 0, 1));
   Texture tex("assets/textures/fat_cat.jpg", GL_TEXTURE0, GL_RGB);
   tex.bind();
 
+  window.set_cursor(window.width() / 2, window.height() / 2);
   while (window.is_active()) {
+    auto [x, y] = window.get_cursor();
+    camera.rotate(x, y);
+    camera.move(move(window), 2 * window.delta());
+    window.set_cursor(window.width() / 2, window.height() / 2);
+    camera.apply(color, "view", "proj");
     glad_glDrawElements(GL_TRIANGLES, sizeof(index_data) / sizeof(int),
                         GL_UNSIGNED_INT, nullptr);
     window.update();
