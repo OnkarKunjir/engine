@@ -9,10 +9,10 @@ private:
 
 public:
   /**
-   *Creates vertex array object
-   *@param buffer Vertex buffer to be bound to vertexarray
-   *@param index Index buffer for buffer.
-   *@param layout layout of parameters in vertices of buffer
+   *  Creates vertex array object
+   *  @param buffer Specify vertex buffer.
+   *  @param index Specify index buffer.
+   *  @param layout Specify vertex buffer layout.
    */
   VertexArray(const Buffer &buffer, const Buffer &index,
               const BufferLayout &layout);

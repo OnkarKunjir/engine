@@ -1,30 +1,50 @@
 #define __FILENAME__ "main.cpp"
 
-#include "engine2d.hpp"
-#include "utils/log.hpp"
-#include "utils/profile.hpp"
+#include "render/render.hpp"
+
+#include <glad/gl.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 int main() {
-  Engine2d engine("engine", 800, 800);
+  Window window("Test", 800, 800, 0, false);
 
-  std::vector<Rect> rect;
+  float rect_vertex[] = {
+      -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 1.0f, // 0
+      0.5f,  0.5f,  0.0f, 1.0f, 1.0f, 1.0f, // 1
+      0.5f,  -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // 2
+      -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, // 3
+  };
 
-  for (int i = 0; i < 800; i += 10) {
-    for (int j = 0; j < 800; j += 10) {
-      rect.push_back({(float)i, (float)j, 10.0f, 10.0f});
-    }
+  Buffer buffer(GL_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(rect_vertex),
+                rect_vertex);
+
+  BufferLayout layout;
+  layout.push_float(3);
+  layout.push_float(3);
+
+  unsigned int index_data[] = {0, 1, 2, 2, 3, 0};
+  Buffer index(GL_ELEMENT_ARRAY_BUFFER, GL_STATIC_DRAW, sizeof(index_data),
+               index_data);
+
+  VertexArray rect(buffer, index, layout);
+  rect.bind();
+
+  Shader color("assets/shader/color/vertex.glsl",
+               "assets/shader/color/fragment.glsl", "out_color");
+  glm::mat4 identity = glm::mat4(1.0f);
+
+  color.set_uniform_matrix4fv("model", glm::value_ptr(identity));
+  color.set_uniform_matrix4fv("view", glm::value_ptr(identity));
+  color.set_uniform_matrix4fv("proj", glm::value_ptr(identity));
+
+  color.bind();
+
+  while (window.is_active()) {
+    glad_glDrawElements(GL_TRIANGLES, sizeof(index_data) / sizeof(int),
+                        GL_UNSIGNED_INT, nullptr);
+    window.update();
+    window.poll_events();
   }
-
-  engine.draw(rect);
-
-  {
-    Profile::Timer t(__PRETTY_FUNCTION__);
-    for (int i = 0; i < 1000 && engine.is_active(); i++) {
-      engine.draw();
-      engine.poll_events();
-      engine.update();
-    }
-  }
-
   return 0;
 }

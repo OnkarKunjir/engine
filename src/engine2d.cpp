@@ -24,8 +24,6 @@ Engine2d::Engine2d(const std::string &title, int width, int height)
   _vao.unbind();
 
   _window.fill(); // make backgroud of window balck.
-  _window.key_callback_warn(
-      false); // turn off warning for key callback not set.
   _shader.set_uniform_matrix4fv("proj", glm::value_ptr(_proj));
 }
 

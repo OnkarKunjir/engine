@@ -1,4 +1,5 @@
 #include "shapes/cuboid.hpp"
+#include <glad/gl.h>
 
 Cuboid::Cuboid(float x, float y, float z, float length, float width,
                float height)

@@ -18,21 +18,6 @@ void Window::glfw_error_callback(int error, const char *description) {
   Log::error(__FILENAME__ ":GLFW", description);
 }
 
-void Window::glfw_key_callback(GLFWwindow *window, int key, int scancode,
-                               int action, int mods) {
-  Window *ctx = (Window *)glfwGetWindowUserPointer(window);
-  try {
-    // if callback function is set call the callback function.
-    ctx->_key_callback(key, scancode, action, mods);
-  } catch (std::bad_function_call) {
-    // warn about callback function not provided only once.
-    if (!ctx->_warn) {
-      Log::warn(__FILENAME__, "Key callback function not provided.");
-      ctx->_warn = true;
-    }
-  }
-}
-
 void Window::opengl_debug_callback(unsigned int source, unsigned int type,
                                    unsigned int id, unsigned int severity,
                                    int length, const char *message,
@@ -43,8 +28,7 @@ void Window::opengl_debug_callback(unsigned int source, unsigned int type,
 // constructors and destructors
 Window::Window(const std::string &title, int width, int height,
                int swap_interval, bool debug)
-    : _warn(false), _width(width), _height(height), _lastframe_time(0),
-      _delta_time(0) {
+    : _width(width), _height(height), _lastframe_time(0), _delta_time(0) {
 
   // initalizes glfw and creates window.
   glfwSetErrorCallback(glfw_error_callback);
@@ -80,11 +64,8 @@ Window::Window(const std::string &title, int width, int height,
 
   // adding key callback function.
   glfwSetWindowUserPointer(_window, this);
-  glfwSetKeyCallback(_window, glfw_key_callback);
 
   glfwSwapInterval(swap_interval);
-  // FIXME: for testing purpose only.
-  // glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
   // opengl buffer options.
   glad_glEnable(GL_DEPTH_TEST); // enabeling depth test by default.
@@ -105,13 +86,6 @@ Window::~Window() {
 // public functions
 bool Window::is_active() const { return !glfwWindowShouldClose(_window); }
 void Window::poll_events() const { glfwPollEvents(); }
-
-void Window::key_callback_warn(bool warn) { _warn = !warn; }
-
-void Window::set_key_callback(
-    std::function<void(int, int, int, int)> callback) {
-  _key_callback = callback;
-}
 
 void Window::update() {
   glfwSwapBuffers(_window);

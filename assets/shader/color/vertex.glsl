@@ -9,7 +9,6 @@ uniform mat4 proj;
 out vec3 vout_color;  // color of vertex for fragment shader.
 
 void main(){
-    // gl_Position = proj * view * model * vec4(in_position, 1.0f);
-    gl_Position = proj * view * vec4(in_position, 1.0f);
+    gl_Position = proj * view * model * vec4(in_position, 1.0f);
     vout_color = in_color;
 }
