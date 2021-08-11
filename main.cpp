@@ -24,7 +24,7 @@ int move(const Window &window) {
 }
 
 int main() {
-  Window window("Test", 800, 800, 0, true);
+  Window window("Test", 800, 800, 0, false);
 
   float rect_vertex[] = {
       -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f, // 0
