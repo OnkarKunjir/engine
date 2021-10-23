@@ -81,7 +81,3 @@ GLuint shaderCreate(char *restrict vs_path, char *restrict fs_path) {
 
   return program;
 }
-
-void shaderUse(GLuint program) { glad_glUseProgram(program); }
-
-void shaderDestroy(GLuint program) { glad_glDeleteProgram(program); }
